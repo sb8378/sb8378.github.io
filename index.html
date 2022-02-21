@@ -1,23 +1,64 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
-</head>
-<body style = "background-color:  white; margin  : 0px">
-    
-    <div id="header" style = "background-color: white; padding : 10px; margin : 0px;position :sticky; top : 0px; border-bottom: 0.5px solid lightgray"></div>
-    <div id='main' style = " margin : 0px;background-color: white; font-family: roboto"></div>
-    
-    <script src="https://unpkg.com/react@16/umd/react.development.js" crossorigin></script>
-  <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js" crossorigin></script>
-  <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
-  <script src="https://unpkg.com/react-router-dom/umd/react-router-dom.min.js"></script>
-  <!-- Load our React component. -->
+<!-- Define a form in which you will ask your customer to input their password -->
+<form onSubmit="onSubmit(); return false;" style="height:50px">
+    <div id="password" style="background-color: rgb(242,242,242); border-radius: 20px;"></div><br/>
+    <!-- <input type="submit" value="Login" /> -->
+  </form>
+  <script>
+    // let head_ref = document.getElementsByTagName('head')[0];
+    // let new_src = document.createElement('script');
+    // new_src.src = "https://build.weavr.io/app/secure/static/client.1.js";
+    // new_src.onload = function(){
+    //   window.alert('Script is loaded');
+    //   window.alert('Script is loaded');
+    //   window.OpcUxSecureClient.init('HOMwh0cqahsBedJJehsADQ==');
   
- <script src="homepage.js"></script>
- <script src="header.js"></script>
-</body>
-</html>
+    //   var form = window.OpcUxSecureClient.form();
+    // }
+    // head_ref.appendChild(new_src);
+  </script>
+  <!-- <script src="https://build.weavr.io/app/secure/static/client.1.js"></script> -->
+  <script src="https://secure.weavr.io/app/secure/static/client.1.js"></script>
+  <script type="text/javascript">
+    // Initialise the UI library using your ui_key. Replace {{ui_key}} with your own UI key.
+    // window.OpcUxSecureClient.init('HOMwh0cqahsBedJJehsADQ==');//development
+    window.OpcUxSecureClient.init('/ywssee+mhoBfX/x3o0ACg==');//production
+    // Create an instance of a secure form
+    var form = window.OpcUxSecureClient.form();
+    // Create an instance of a secure Password component that will collect the password
+    var input = form.input(
+      'p', 
+      'password', 
+      {
+        placeholder: 'Enter Password', 
+        maxlength: 20,
+        style : {
+          base : {
+            fontSize : 17+'px',
+            padding : '10px',
+            margin : '0px'
+          }
+        }
+        // value : 'fgkjfdkjf'
+      }
+    );
+  
+    // Embed the secure Password component in the HTML element where you want
+    // the Password component to the shown on screen
+    input.mount(document.getElementById('password'));
+    // window.ReactNativeWebView.postMessage("Hey");
+    // Define a function that will be executed when the form is submitted by the user
+    function onSubmit() {
+        // Get the tokenised version of the password inputted by your customer
+        form.tokenize(function(tokens) {
+        window.ReactNativeWebView.postMessage(tokens.p + 'password');
+            console.log(tokens.p);
+        });
+    }
+    window.addEventListener('message',(msg)=>{
+      if(msg.data=="submit_type"){
+        onSubmit();
+      }
+      // window.ReactNativeWebView.postMessage(msg.data);
+      // window.ReactNativeWebView.postMessage(msg);
+    })
+  </script>
